@@ -1,11 +1,7 @@
 package clases.figuras;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.beans.VetoableChangeListener;
-import java.beans.VetoableChangeSupport;
-
 import JLISV.LIB;
+import java.beans.*;
 
 public class Rectangulo implements Cloneable, Comparable<Rectangulo>{
     private int ancho = 2;
@@ -14,8 +10,8 @@ public class Rectangulo implements Cloneable, Comparable<Rectangulo>{
     private char relleno = '+';
     public final int ANCHO_INICIAL;
     public final int ALTO_INICIAL;
-    private final PropertyChangeSupport cambio = new PropertyChangeSupport(this);
-    private final VetoableChangeSupport cambiandose = new VetoableChangeSupport(this);
+    protected final PropertyChangeSupport cambio = new PropertyChangeSupport(this);
+    protected final VetoableChangeSupport cambiandose = new VetoableChangeSupport(this);
     public static class FueraDeRangoException extends RuntimeException{
         public FueraDeRangoException(String s){
             super(s);
@@ -35,12 +31,7 @@ public class Rectangulo implements Cloneable, Comparable<Rectangulo>{
     public char getRelleno(){
         return relleno;
     }
-    public PropertyChangeSupport getCambio(){
-        return cambio;
-    }
-    public VetoableChangeSupport getCambiandose(){
-        return cambiandose;
-    }
+
     //setters
     public Rectangulo setAncho(int v){
         if(v < 2){
@@ -48,7 +39,9 @@ public class Rectangulo implements Cloneable, Comparable<Rectangulo>{
         }
         int anchoAntiguo = this.ancho;
         this.ancho = v;
-        cambio.firePropertyChange("cambio", anchoAntiguo, this.ancho);
+        if(!(this instanceof Cuadrado)){
+            cambio.firePropertyChange("ancho", anchoAntiguo, this.ancho);
+        }
         return this;
     }
     public Rectangulo setAlto(int v){
@@ -57,7 +50,9 @@ public class Rectangulo implements Cloneable, Comparable<Rectangulo>{
         }
         int altoAntiguo = this.alto;
         this.alto = v;
-        cambio.firePropertyChange("cambio", altoAntiguo, this.alto);
+        if(!(this instanceof Rectangulo)){
+            cambio.firePropertyChange("alto", altoAntiguo, this.alto);
+        }
         return this;
     }
     public Rectangulo setBorde(char v){

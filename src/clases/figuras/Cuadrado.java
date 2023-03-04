@@ -10,48 +10,52 @@ public final class Cuadrado extends Rectangulo{
     }
 
     public int getLado(){
-        return super.getAlto();
+        return getAlto();
     }
 
     public Cuadrado setGirado(boolean girado){
         try {
-            getCambiandose().fireVetoableChange("girado", this.girado, girado);
+            cambiandose.fireVetoableChange("girado", this.girado, girado);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
         boolean antiguo = this.girado;
         this.girado = girado;
-        getCambio().firePropertyChange("girado", antiguo, this.girado);
+        cambio.firePropertyChange("girado", antiguo, this.girado);
         return this;
     }
 
     public Cuadrado setLado(int lado){
         try {
-            getCambiandose().fireVetoableChange("lado", super.getAlto(), lado);
+            cambiandose.fireVetoableChange("lado", getAlto(), lado);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        int antiguo = super.getAlto();
+        int antiguo = getAlto();
         setAlto(lado);
-        getCambio().firePropertyChange("lado", antiguo, lado);
+        cambio.firePropertyChange("lado", antiguo, lado);
         return this; 
     }
 
     @Override
     public Cuadrado setAncho(int lado){
+        int anchoAntiguo = getAncho();
         super.setAncho(lado);
-        if(super.getAncho() != super.getAlto()){
+        if(getAncho() != getAlto()){
             super.setAlto(lado);
         }
+        cambio.firePropertyChange("ancho", anchoAntiguo, getAncho());
         return this;
     }
 
     @Override
     public Cuadrado setAlto(int lado){
+        int altoAntiguo = getAlto();
         super.setAlto(lado);
-        if(super.getAlto() != super.getAncho()){
+        if(getAlto() != getAncho()){
             super.setAncho(lado);
         }
+        cambio.firePropertyChange("alto", altoAntiguo, getAlto());
         return this;
     }
 

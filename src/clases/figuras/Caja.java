@@ -23,13 +23,13 @@ public class Caja extends Rectangulo{
             throw new Caja.FueraDeRangoException("Numero debe ser mayor de 2");
         }
         try {
-            getCambiandose().fireVetoableChange("largo", this.largo,largo);
+            cambiandose.fireVetoableChange("largo", this.largo,largo);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
         int antiguo = this.largo;
         this.largo = largo;
-        getCambio().firePropertyChange("largo",antiguo,this.largo);
+        cambio.firePropertyChange("largo",antiguo,this.largo);
         return this;
     }
 
