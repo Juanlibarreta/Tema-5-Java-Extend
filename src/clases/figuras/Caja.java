@@ -2,12 +2,13 @@ package clases.figuras;
 
 import java.beans.PropertyVetoException;
 
-public class Caja extends Rectangulo{
+final public class Caja extends Rectangulo{
     public static final Caja UNO;
     public static final Caja DIEZ;
     public static final int NUMERO_DE_CARAS;
     public final int LARGO_INICIAL;
     private int largo = 2;
+
     static{
         NUMERO_DE_CARAS = 12;
         UNO = new Caja(2, 2, 2);
@@ -20,7 +21,7 @@ public class Caja extends Rectangulo{
 
     public Caja setLargo(int largo){
         if(largo < 2){
-            throw new Caja.FueraDeRangoException("Numero debe ser mayor de 2");
+            throw new FueraDeRangoException("Numero debe ser mayor de 2");
         }
         try {
             cambiandose.fireVetoableChange("largo", this.largo,largo);
@@ -33,35 +34,39 @@ public class Caja extends Rectangulo{
         return this;
     }
 
-    public Caja(int largo, int alto, int ancho){
+    public Caja(int largo, int ancho, int alto){
         super(ancho, alto);
         setLargo(largo);
         LARGO_INICIAL = getLargo();
     }
+
     public Caja(int largo){
         setLargo(largo);
         LARGO_INICIAL = getLargo();
     }
+
     public Caja(){
         LARGO_INICIAL = getLargo();
     }
-    public Caja(int alto, int ancho, int largo, char borde, char relleno){
+
+    public Caja(int largo, int ancho, int alto, char borde, char relleno){
         super(ancho, alto,borde,relleno);
         setLargo(largo);
         LARGO_INICIAL = getLargo();
     }
+
     public Caja(Caja c){
-        super(c.getAlto(),c.getAncho(),c.getBorde(),c.getRelleno());
+        super(c.getAncho(),c.getAlto(),c.getBorde(),c.getRelleno());
         setLargo(c.getLargo());
         LARGO_INICIAL = c.LARGO_INICIAL;
     }
 
     public int volumen(){
-        return getLargo()*getAlto()*getAncho();
+        return getLargo()*area();
     }
 
     public boolean esCubo(){
-        if(getLargo()==getAncho() && getAncho()== getAlto()) return true;
+        if(getLargo() == getAncho() && esCuadrado()) return true;
         return false;
     }
 
@@ -85,7 +90,8 @@ public class Caja extends Rectangulo{
 
     @Override
     public final String dibujar(){
-        String s = "";
+        String s = "BASE: \n";
+        s+= super.dibujar();
 
         return s;
     }
