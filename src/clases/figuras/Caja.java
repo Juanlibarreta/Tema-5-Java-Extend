@@ -66,14 +66,18 @@ final public class Caja extends Rectangulo{
     }
 
     public boolean esCubo(){
-        if(getLargo() == getAncho() && esCuadrado()) return true;
-        return false;
+        return getLargo() == getAncho() && esCuadrado();
     }
 
     public static final Caja sumar(Caja c1, Caja c2){
-         return  new Caja(c1.getLargo()+c2.getLargo(),
+        if(c1 == null && c2 == null) return null;
+        if(c1 == null && c2 != null) return c2;
+        if(c1 != null && c2 == null) return c1;
+
+        Caja c = new Caja(c1.getLargo()+c2.getLargo(),
                             c1.getAncho()+c2.getAncho(),
-                            c1.getAncho()+c2.getAncho());
+                            c1.getAlto()+c2.getAlto());
+        return c;
     }
 
     @Override
@@ -89,10 +93,11 @@ final public class Caja extends Rectangulo{
     }
 
     @Override
-    public final String dibujar(){
-        String s = "BASE: \n";
-        s+= super.dibujar();
-
+    public String dibujar(String v){
+        String s = "";
+        s += super.dibujar("BASE: \n");
+        s += new Rectangulo(getLargo(),getAncho()).dibujar("CARA LATERAL: \n");
+        s += new Rectangulo(getAlto(),getLargo()).dibujar("CARA FRONTAL: \n");
         return s;
     }
 
@@ -127,5 +132,15 @@ final public class Caja extends Rectangulo{
         }else{
             throw new IllegalArgumentException();
         }
+    }
+
+    @Override
+    public Caja clone() {
+        return (Caja) super.clone();
+    }
+    
+    public static void main(String[] args) {
+        Caja c = new Caja(7,5,6);
+        System.out.println(c.dibujar(""));
     }
 }
